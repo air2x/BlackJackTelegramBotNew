@@ -1,13 +1,12 @@
 package ru.maxima.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static ru.maxima.model.Card.TWO_DIAMONDS;
-
 public class DeckOfCards {
-    private List<Card> cards = List.of(Card.TWO_DIAMONDS, Card.THREE_DIAMONDS, Card.FOUR_DIAMONDS, Card.FIVE_DIAMONDS,
+
+
+    private final List<Card> cards = List.of(Card.TWO_DIAMONDS, Card.THREE_DIAMONDS, Card.FOUR_DIAMONDS, Card.FIVE_DIAMONDS,
             Card.SIX_DIAMONDS, Card.SEVEN_DIAMONDS, Card.EIGHT_DIAMONDS, Card.NINE_DIAMONDS, Card.TEN_DIAMONDS,
             Card.JACK_DIAMONDS, Card.QUEEN_DIAMONDS, Card.KING_DIAMONDS, Card.ACE_DIAMONDS,
 
@@ -27,7 +26,7 @@ public class DeckOfCards {
 
     public Card getRandomCard() {
         Random random = new Random();
-        return cards.get(random.nextInt(0, sizeCards));
+        return cards.get(random.nextInt(sizeCards));
     }
 
 }

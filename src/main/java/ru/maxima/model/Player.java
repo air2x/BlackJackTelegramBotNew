@@ -6,6 +6,9 @@ import java.util.Scanner;
 
 public class Player {
 
+    public static final String ANSWER_YES = "да";
+    public static final String ANSWER_NO = "нет";
+
     private List<Card> cardOnHands = new ArrayList<>();
 
     public void takeCard(Card card) {
@@ -14,7 +17,7 @@ public class Player {
 
     public int sumValuesOnHand() {
         int count = 0;
-        for (Card card: cardOnHands) {
+        for (Card card : cardOnHands) {
             count += card.getValue();
         }
         return count;
@@ -25,17 +28,21 @@ public class Player {
     }
 
     public boolean isNeedCard() {
-        System.out.println("-----Âàøè êàðòû-------");
+        System.out.println("-----Ваши карты-------");
         showCards();
-        System.out.println("Íóæíà ëè âàì åùå îäíà êàðòà?");
         Scanner scanner = new Scanner(System.in);
-        if (!"äà".equals(scanner.nextLine()) && !"íåò".equals(scanner.nextLine())) {
-            System.out.println("ß ïîíèìàþ òîëüêî äà èëè íåò, ââåäèòå ýòè çíà÷åíèÿ");
-        }
+        String answer;
+        System.out.println("Нужна еще карта?");
+        do {
+            answer = scanner.nextLine();
+            if (!ANSWER_YES.equalsIgnoreCase(answer) && !ANSWER_NO.equalsIgnoreCase(answer)) {
+                System.out.println("Введите да или нет");
+            }
+        } while (!ANSWER_YES.equalsIgnoreCase(answer) && !ANSWER_NO.equalsIgnoreCase(answer));
 
-        if ("äà".equals(scanner.nextLine())) {
+        if (ANSWER_YES.equals(answer)) {
             return true;
-        } else if ("íåò".equals(scanner.nextLine())) {
+        } else if (ANSWER_NO.equals(answer)) {
             return false;
         }
         return false;
