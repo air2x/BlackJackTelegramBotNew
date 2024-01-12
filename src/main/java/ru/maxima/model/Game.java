@@ -39,6 +39,7 @@ public class Game {
     }
 
     public void determineWinner() {
+
         int temp = 0;
         int minDifferenceWithBlackJack = Integer.MAX_VALUE;
         showCardsAllPlayers();

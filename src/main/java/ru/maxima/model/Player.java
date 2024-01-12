@@ -19,10 +19,10 @@ public class Player {
 
     public void takeCard(Card card) {
         cardOnHands.add(card);
-        sumValuesOnHand();
     }
 
-    public int sumValuesOnHand() {
+    public void sumValuesOnHand() {
+        numOfPoints = 0;
         int temp = 0;
         for (Card card : cardOnHands) {
             if (card.getName().contains("Туз")) {
@@ -38,7 +38,6 @@ public class Player {
                 numOfPoints += temp;
             }
         }
-        return numOfPoints;
     }
 
     public void showCards() {
@@ -46,6 +45,7 @@ public class Player {
     }
 
     public boolean isNeedCard() {
+        sumValuesOnHand();
         System.out.println("-----Ваши карты " + this.getName() + " -------");
         showCards();
         System.out.println(this.getNumOfPoints());
