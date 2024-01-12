@@ -8,19 +8,37 @@ public class Player {
 
     public static final String ANSWER_YES = "да";
     public static final String ANSWER_NO = "нет";
+    public static final int BLACK_JACK = 21;
+
+    private int differenceWithBlackJack;
+    private String name;
 
     private List<Card> cardOnHands = new ArrayList<>();
 
+    private int numOfPoints;
+
     public void takeCard(Card card) {
         cardOnHands.add(card);
+        sumValuesOnHand();
     }
 
     public int sumValuesOnHand() {
-        int count = 0;
+        int temp = 0;
         for (Card card : cardOnHands) {
-            count += card.getValue();
+            if (card.getName().contains("Туз")) {
+                temp++;
+            } else {
+                numOfPoints += card.getValue();
+            }
         }
-        return count;
+        if (temp > 0) {
+            if (numOfPoints < BLACK_JACK) {
+                numOfPoints += 11 * temp;
+            } else {
+                numOfPoints += temp;
+            }
+        }
+        return numOfPoints;
     }
 
     public void showCards() {
@@ -28,8 +46,9 @@ public class Player {
     }
 
     public boolean isNeedCard() {
-        System.out.println("-----Ваши карты-------");
+        System.out.println("-----Ваши карты " + this.getName() + " -------");
         showCards();
+        System.out.println(this.getNumOfPoints());
         Scanner scanner = new Scanner(System.in);
         String answer;
         System.out.println("Нужна еще карта?");
@@ -46,5 +65,25 @@ public class Player {
             return false;
         }
         return false;
+    }
+
+    public int getNumOfPoints() {
+        return numOfPoints;
+    }
+
+    public int getDifferenceWithBlackJack() {
+        return differenceWithBlackJack;
+    }
+
+    public void setDifferenceWithBlackJack(int differenceWithBlackJack) {
+        this.differenceWithBlackJack = differenceWithBlackJack;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
