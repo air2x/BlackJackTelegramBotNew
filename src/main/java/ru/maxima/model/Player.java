@@ -33,7 +33,7 @@ public class Player {
         cardOnHands.forEach(x -> System.out.println(x.getName()));
     }
 
-    public boolean isNeedCard() {
+    public void isNeedCard() {
         System.out.println("-----Ваши карты " + this.getName() + " -------");
         showCards();
         System.out.println(this.getNumOfPoints());
@@ -52,7 +52,6 @@ public class Player {
         } else if (ANSWER_NO.equals(answer)) {
             isAnswerCardNeeded = false;
         }
-        return isAnswerCardNeeded;
     }
 
     public int getNumOfPoints() {

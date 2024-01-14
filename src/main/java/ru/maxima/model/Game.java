@@ -1,8 +1,8 @@
 package ru.maxima.model;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static ru.maxima.model.Player.BLACK_JACK;
@@ -70,7 +70,7 @@ public class Game {
                 croupier = player;
             }
         }
-        if (!(winner instanceof Croupier) && winner.getNumOfPoints() == croupier.getNumOfPoints()) {
+        if (!(winner instanceof Croupier) && winner.getNumOfPoints() == Objects.requireNonNull(croupier).getNumOfPoints()) {
             System.out.println("Ситуация \"ровно\"");
         } else {
             System.out.println("Победил игрок " + winner.getName() + ", набрал " + winner.getNumOfPoints() + " очков.");
