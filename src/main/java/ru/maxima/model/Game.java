@@ -9,11 +9,12 @@ import static ru.maxima.model.Player.BLACK_JACK;
 public class Game {
 
     Player winner;
-    private List<Player> playersInGame = new ArrayList<>();
-    private DeckOfCards deck = new DeckOfCards();
+    private final List<Player> playersInGame = new ArrayList<>();
+    private final DeckOfCards deck = new DeckOfCards();
+    private Croupier croupier = new Croupier();
 
     public void addPlayer(Player player) {
-        if ("croupier".equals(player.getName())) {
+        if (player instanceof Croupier) {
             playersInGame.add(player);
         } else {
             System.out.println("Введите имя игрока");
@@ -31,31 +32,34 @@ public class Game {
     }
 
     public void oneCardIfPlayerNeed() {
-        for (Player player : playersInGame) {
-            while (player.isNeedCard()) {
-                player.takeCard(deck.getRandomCard());
+        int tempCountPlayers = playersInGame.size();
+        do {
+            for (Player player : playersInGame) {
+                if (player.isAnswerCardNeeded()) {
+                    if (!player.isNeedCard()) {
+                        tempCountPlayers--;
+                    } else {
+                        player.takeCard(deck.getRandomCard());
+                    }
+                }
             }
-        }
+        } while (tempCountPlayers != 0);
     }
 
     public void determineWinner() {
-
-        int temp = 0;
         int minDifferenceWithBlackJack = Integer.MAX_VALUE;
         showCardsAllPlayers();
         for (Player player : playersInGame) {
-            player.setDifferenceWithBlackJack(Math.abs(BLACK_JACK - player.getNumOfPoints()));
+            player.setDifferenceWithBlackJack(BLACK_JACK - player.getNumOfPoints());
         }
         for (Player player : playersInGame) {
-            if (player.getDifferenceWithBlackJack() < minDifferenceWithBlackJack) {
+            if (player.getDifferenceWithBlackJack() >= 0 &&
+                    player.getDifferenceWithBlackJack() < minDifferenceWithBlackJack) {
                 minDifferenceWithBlackJack = player.getDifferenceWithBlackJack();
                 winner = player;
-            } else if (minDifferenceWithBlackJack == player.getDifferenceWithBlackJack()) {
-                temp++;
             }
         }
-
-        if (temp > 0) {
+        if (winner.getNumOfPoints() == croupier.getNumOfPoints()) {
             System.out.println("Ситуация \"ровно\"");
         } else {
             System.out.println("Победил игрок " + winner.getName() + ", набрал " + winner.getNumOfPoints() + " очков.");

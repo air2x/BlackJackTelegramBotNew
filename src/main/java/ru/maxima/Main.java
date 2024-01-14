@@ -36,6 +36,7 @@ public class Main {
          */
 
         Game game = new Game();
+
         Player player1 = new Player();
         Player player2 = new Player();
 

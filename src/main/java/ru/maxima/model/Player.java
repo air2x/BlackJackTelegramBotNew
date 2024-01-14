@@ -1,5 +1,7 @@
 package ru.maxima.model;
 
+import ru.maxima.model.enums.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,46 +14,52 @@ public class Player {
 
     private int differenceWithBlackJack;
     private String name;
-
-    private List<Card> cardOnHands = new ArrayList<>();
-
+    private final List<Card> cardOnHands = new ArrayList<>();
     private int numOfPoints;
+    private boolean isAnswerCardNeeded = true;
 
     public void takeCard(Card card) {
+        if (card.getName().contains("Туз") && card.getValue() < BLACK_JACK) {
+            numOfPoints += 1;
+        } else if (card.getName().contains("Туз") && card.getValue() > BLACK_JACK) {
+            numOfPoints += 11;
+        } else {
+            numOfPoints += card.getValue();
+        }
         cardOnHands.add(card);
     }
 
-    public void sumValuesOnHand() {
-        numOfPoints = 0;
-        int temp = 0;
-        for (Card card : cardOnHands) {
-            if (card.getName().contains("Туз")) {
-                temp++;
-            } else {
-                numOfPoints += card.getValue();
-            }
-        }
-        if (temp > 0) {
-            if (numOfPoints < BLACK_JACK) {
-                numOfPoints += 11 * temp;
-            } else {
-                numOfPoints += temp;
-            }
-        }
-    }
+//    public void sumValuesOnHand() {
+//        numOfPoints = 0;
+//        int temp = 0;
+//        for (Card card : cardOnHands) {
+//            if (card.getName().contains("Туз")) {
+//                temp++;
+//            } else {
+//                numOfPoints += card.getValue();
+//            }
+//        }
+//        if (temp > 0) {
+//            if (numOfPoints < BLACK_JACK) {
+//                numOfPoints += 11 * temp;
+//            } else {
+//                numOfPoints += temp;
+//            }
+//        }
+//    }
 
     public void showCards() {
         cardOnHands.forEach(x -> System.out.println(x.getName()));
     }
 
     public boolean isNeedCard() {
-        sumValuesOnHand();
+//        sumValuesOnHand();
         System.out.println("-----Ваши карты " + this.getName() + " -------");
         showCards();
         System.out.println(this.getNumOfPoints());
         Scanner scanner = new Scanner(System.in);
         String answer;
-        System.out.println("Нужна еще карта?");
+        System.out.println(getName() + ", нужна еще карта?");
         do {
             answer = scanner.nextLine();
             if (!ANSWER_YES.equalsIgnoreCase(answer) && !ANSWER_NO.equalsIgnoreCase(answer)) {
@@ -60,11 +68,11 @@ public class Player {
         } while (!ANSWER_YES.equalsIgnoreCase(answer) && !ANSWER_NO.equalsIgnoreCase(answer));
 
         if (ANSWER_YES.equals(answer)) {
-            return true;
+            isAnswerCardNeeded = true;
         } else if (ANSWER_NO.equals(answer)) {
-            return false;
+            isAnswerCardNeeded = false;
         }
-        return false;
+        return isAnswerCardNeeded;
     }
 
     public int getNumOfPoints() {
@@ -85,5 +93,9 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isAnswerCardNeeded() {
+        return isAnswerCardNeeded;
     }
 }
