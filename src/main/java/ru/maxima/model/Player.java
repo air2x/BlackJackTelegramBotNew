@@ -29,31 +29,11 @@ public class Player {
         cardOnHands.add(card);
     }
 
-//    public void sumValuesOnHand() {
-//        numOfPoints = 0;
-//        int temp = 0;
-//        for (Card card : cardOnHands) {
-//            if (card.getName().contains("Туз")) {
-//                temp++;
-//            } else {
-//                numOfPoints += card.getValue();
-//            }
-//        }
-//        if (temp > 0) {
-//            if (numOfPoints < BLACK_JACK) {
-//                numOfPoints += 11 * temp;
-//            } else {
-//                numOfPoints += temp;
-//            }
-//        }
-//    }
-
     public void showCards() {
         cardOnHands.forEach(x -> System.out.println(x.getName()));
     }
 
     public boolean isNeedCard() {
-//        sumValuesOnHand();
         System.out.println("-----Ваши карты " + this.getName() + " -------");
         showCards();
         System.out.println(this.getNumOfPoints());

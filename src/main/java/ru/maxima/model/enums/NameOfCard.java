@@ -6,7 +6,7 @@ public enum NameOfCard {
     QUEEN("Дама", 10), KING("Король", 10), ACE("Туз", 1);
 
     private final String name;
-    private int value;
+    private final int value;
 
     NameOfCard(String name, int value) {
         this.name = name;

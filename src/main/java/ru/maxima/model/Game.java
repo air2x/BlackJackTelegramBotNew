@@ -1,5 +1,6 @@
 package ru.maxima.model;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,7 +12,6 @@ public class Game {
     Player winner;
     private final List<Player> playersInGame = new ArrayList<>();
     private final DeckOfCards deck = new DeckOfCards();
-    private Croupier croupier = new Croupier();
 
     public void addPlayer(Player player) {
         if (player instanceof Croupier) {
@@ -35,19 +35,27 @@ public class Game {
         int tempCountPlayers = playersInGame.size();
         do {
             for (Player player : playersInGame) {
-                if (player.isAnswerCardNeeded()) {
-                    if (!player.isNeedCard()) {
+                if (player instanceof Croupier) {
+                    if (player.getNumOfPoints() < 17) {
+                        player.takeCard(deck.getRandomCard());
+                    } else {
+                        tempCountPlayers--;
+                    }
+                } else if (player.isAnswerCardNeeded()) {
+                    player.isNeedCard();
+                    if (!player.isAnswerCardNeeded()) {
                         tempCountPlayers--;
                     } else {
                         player.takeCard(deck.getRandomCard());
                     }
                 }
             }
-        } while (tempCountPlayers != 0);
+        } while (tempCountPlayers > 0);
     }
 
     public void determineWinner() {
         int minDifferenceWithBlackJack = Integer.MAX_VALUE;
+        Player croupier = null;
         showCardsAllPlayers();
         for (Player player : playersInGame) {
             player.setDifferenceWithBlackJack(BLACK_JACK - player.getNumOfPoints());
@@ -58,8 +66,11 @@ public class Game {
                 minDifferenceWithBlackJack = player.getDifferenceWithBlackJack();
                 winner = player;
             }
+            if (player instanceof Croupier) {
+                croupier = player;
+            }
         }
-        if (winner.getNumOfPoints() == croupier.getNumOfPoints()) {
+        if (!(winner instanceof Croupier) && winner.getNumOfPoints() == croupier.getNumOfPoints()) {
             System.out.println("Ситуация \"ровно\"");
         } else {
             System.out.println("Победил игрок " + winner.getName() + ", набрал " + winner.getNumOfPoints() + " очков.");

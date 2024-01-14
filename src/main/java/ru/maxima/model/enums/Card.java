@@ -2,8 +2,8 @@ package ru.maxima.model.enums;
 
 public class Card {
 
-    private String name;
-    private String suit;
+    private final String name;
+    private final String suit;
     private int value;
 
     public Card(String name, String suit, int value) {
