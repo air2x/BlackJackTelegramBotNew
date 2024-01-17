@@ -33,20 +33,28 @@ public class Game {
 
     public void oneCardIfPlayerNeed() {
         int tempCountPlayers = playersInGame.size();
+        List<Integer> isAnswers = new ArrayList<>();
+        for (int i = 0; i < playersInGame.size(); i++) {
+            isAnswers.add(1);
+        }
         do {
-            for (Player player : playersInGame) {
-                if (player instanceof Croupier) {
-                    if (player.getNumOfPoints() < 17) {
-                        player.takeCard(deck.getRandomCard());
+            for (int i = 0; i < playersInGame.size(); i++) {
+                if (isAnswers.get(i) == 0) {
+                    continue;
+                }
+                if (playersInGame.get(i) instanceof Croupier) {
+                    if (playersInGame.get(i).sumPointsCardOnHands() < 17) {
+                        playersInGame.get(i).takeCard(deck.getRandomCard());
                     } else {
                         tempCountPlayers--;
+                        isAnswers.set(i, 0);
                     }
-                } else if (player.isAnswerCardNeeded()) {
-                    player.isNeedCard();
-                    if (!player.isAnswerCardNeeded()) {
+                } else {
+                    if (!playersInGame.get(i).isNeedCard()) {
                         tempCountPlayers--;
+                        isAnswers.set(i, 0);
                     } else {
-                        player.takeCard(deck.getRandomCard());
+                        playersInGame.get(i).takeCard(deck.getRandomCard());
                     }
                 }
             }
@@ -58,29 +66,27 @@ public class Game {
         Player croupier = null;
         showCardsAllPlayers();
         for (Player player : playersInGame) {
-            player.setDifferenceWithBlackJack(BLACK_JACK - player.getNumOfPoints());
-        }
-        for (Player player : playersInGame) {
-            if (player.getDifferenceWithBlackJack() >= 0 &&
-                    player.getDifferenceWithBlackJack() < minDifferenceWithBlackJack) {
-                minDifferenceWithBlackJack = player.getDifferenceWithBlackJack();
+            int differenceWithBlackJack = BLACK_JACK - player.sumPointsCardOnHands();
+            if (differenceWithBlackJack >= 0 && differenceWithBlackJack < minDifferenceWithBlackJack) {
+                minDifferenceWithBlackJack = differenceWithBlackJack;
                 winner = player;
             }
             if (player instanceof Croupier) {
                 croupier = player;
             }
         }
-        if (!(winner instanceof Croupier) && winner.getNumOfPoints() == Objects.requireNonNull(croupier).getNumOfPoints()) {
+        if (!(winner instanceof Croupier) && winner.sumPointsCardOnHands()
+                == Objects.requireNonNull(croupier).sumPointsCardOnHands()) {
             System.out.println("Ситуация \"ровно\"");
         } else {
-            System.out.println("Победил игрок " + winner.getName() + ", набрал " + winner.getNumOfPoints() + " очков.");
+            System.out.println("Победил игрок " + winner.getName() + ", набрал " + winner.sumPointsCardOnHands() + " очков.");
         }
     }
 
     public void showCardsAllPlayers() {
         for (Player player : playersInGame) {
             player.showCards();
-            System.out.println("Сумма очков " + player.getName() + " = " + player.getNumOfPoints());
+            System.out.println("Сумма очков " + player.getName() + " = " + player.sumPointsCardOnHands());
             System.out.println("--------------------");
         }
     }

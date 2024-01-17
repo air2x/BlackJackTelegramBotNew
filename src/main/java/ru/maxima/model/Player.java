@@ -1,6 +1,7 @@
 package ru.maxima.model;
 
 import ru.maxima.model.enums.Card;
+import ru.maxima.model.enums.NameOfCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,34 +13,45 @@ public class Player {
     public static final String ANSWER_NO = "нет";
     public static final int BLACK_JACK = 21;
 
-    private int differenceWithBlackJack;
     private String name;
     private final List<Card> cardOnHands = new ArrayList<>();
-    private int numOfPoints;
-    private boolean isAnswerCardNeeded = true;
 
     public void takeCard(Card card) {
-        if (card.getName().contains("Туз") && card.getValue() < BLACK_JACK) {
-            numOfPoints += 1;
-        } else if (card.getName().contains("Туз") && card.getValue() > BLACK_JACK) {
-            numOfPoints += 11;
-        } else {
-            numOfPoints += card.getValue();
-        }
         cardOnHands.add(card);
     }
 
+    public int sumPointsCardOnHands() {
+        int temp = 0;
+        int numOfPoints = 0;
+        for (Card card : cardOnHands) {
+            if (NameOfCard.ACE.equals(card.getNameOfCard())) {
+                temp += 1;
+            } else {
+                numOfPoints += card.getValue();
+            }
+        }
+        while (temp > 0) {
+            if (numOfPoints < BLACK_JACK) {
+                numOfPoints += 11;
+            } else {
+                numOfPoints += 1;
+            }
+            temp--;
+        }
+        return numOfPoints;
+    }
+
     public void showCards() {
+        System.out.println("-----Ваши карты " + name + " -------");
         cardOnHands.forEach(x -> System.out.println(x.getName()));
     }
 
-    public void isNeedCard() {
-        System.out.println("-----Ваши карты " + this.getName() + " -------");
+    public boolean isNeedCard() {
         showCards();
-        System.out.println(this.getNumOfPoints());
+        System.out.println(sumPointsCardOnHands());
         Scanner scanner = new Scanner(System.in);
         String answer;
-        System.out.println(getName() + ", нужна еще карта?");
+        System.out.println(name + ", нужна еще карта?");
         do {
             answer = scanner.nextLine();
             if (!ANSWER_YES.equalsIgnoreCase(answer) && !ANSWER_NO.equalsIgnoreCase(answer)) {
@@ -48,22 +60,11 @@ public class Player {
         } while (!ANSWER_YES.equalsIgnoreCase(answer) && !ANSWER_NO.equalsIgnoreCase(answer));
 
         if (ANSWER_YES.equals(answer)) {
-            isAnswerCardNeeded = true;
+            return true;
         } else if (ANSWER_NO.equals(answer)) {
-            isAnswerCardNeeded = false;
+            return false;
         }
-    }
-
-    public int getNumOfPoints() {
-        return numOfPoints;
-    }
-
-    public int getDifferenceWithBlackJack() {
-        return differenceWithBlackJack;
-    }
-
-    public void setDifferenceWithBlackJack(int differenceWithBlackJack) {
-        this.differenceWithBlackJack = differenceWithBlackJack;
+        return false;
     }
 
     public String getName() {
@@ -72,9 +73,5 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean isAnswerCardNeeded() {
-        return isAnswerCardNeeded;
     }
 }

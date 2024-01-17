@@ -8,8 +8,4 @@ public enum SuitOfCard {
     SuitOfCard(String suit) {
         this.suit = suit;
     }
-
-    public String getSuit() {
-        return suit;
-    }
 }

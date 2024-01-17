@@ -2,21 +2,25 @@ package ru.maxima.model.enums;
 
 public class Card {
 
-    private final String name;
-    private final String suit;
-    private final int value;
+    private NameOfCard name;
+    private SuitOfCard suit;
 
-    public Card(String name, String suit, int value) {
+    public Card(NameOfCard name, SuitOfCard suit) {
         this.name = name;
         this.suit = suit;
-        this.value = value;
+
     }
 
     public String getName() {
+        return name.getName();
+    }
+
+    public NameOfCard getNameOfCard() {
         return name;
     }
 
     public int getValue() {
-        return value;
+        return name.getValue();
     }
+
 }

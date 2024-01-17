@@ -14,7 +14,7 @@ public class DeckOfCards {
             NameOfCard.SIX, NameOfCard.SEVEN, NameOfCard.EIGHT, NameOfCard.NINE, NameOfCard.TEN, NameOfCard.JACK,
             NameOfCard.QUEEN, NameOfCard.KING, NameOfCard.ACE);
     private final List<SuitOfCard> suits = List.of(SuitOfCard.CLUBS, SuitOfCard.DIAMONDS, SuitOfCard.HEARTS, SuitOfCard.SPADES);
-    private final List<Card> cards = new ArrayList<>();
+    private List<Card> cards;
 
     public DeckOfCards() {
         createDeck();
@@ -22,9 +22,10 @@ public class DeckOfCards {
     }
 
     private void createDeck() {
+        cards = new ArrayList<>();
         for (SuitOfCard suit : suits) {
             for (NameOfCard name : names) {
-                cards.add(new Card(name.getName(), suit.getSuit(), name.getValue()));
+                cards.add(new Card(name, suit));
             }
         }
     }
