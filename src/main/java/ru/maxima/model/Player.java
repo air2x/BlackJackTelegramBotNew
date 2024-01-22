@@ -13,8 +13,15 @@ public class Player {
     public static final String ANSWER_NO = "нет";
     public static final int BLACK_JACK = 21;
 
-    private String name;
     private final List<Card> cardOnHands = new ArrayList<>();
+
+    private Long id;
+    private String name;
+
+    public Player(String name, Long id) {
+        this.name = name;
+        this.id = id;
+    }
 
     public void takeCard(Card card) {
         cardOnHands.add(card);
@@ -24,7 +31,7 @@ public class Player {
         int temp = 0;
         int numOfPoints = 0;
         for (Card card : cardOnHands) {
-            if (NameOfCard.ACE.equals(card.getNameOfCard())) {
+            if (NameOfCard.ACE.equals(card.getName())) {
                 temp += 1;
             } else {
                 numOfPoints += card.getValue();
@@ -41,9 +48,11 @@ public class Player {
         return numOfPoints;
     }
 
-    public void showCards() {
-        System.out.println("-----Ваши карты " + name + " -------");
-        cardOnHands.forEach(x -> System.out.println(x.getName()));
+    public String showCards() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("-----Ваши карты ").append(name).append(" -------\n");
+        cardOnHands.forEach(x -> sb.append(x.getName().getName()).append("\n"));
+        return sb.toString();
     }
 
     public boolean isNeedCard() {
@@ -73,5 +82,13 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

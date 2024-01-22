@@ -11,11 +11,7 @@ public class Card {
 
     }
 
-    public String getName() {
-        return name.getName();
-    }
-
-    public NameOfCard getNameOfCard() {
+    public NameOfCard getName() {
         return name;
     }
 
